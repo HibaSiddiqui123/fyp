@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:navbar_screens/Register.dart';
 import 'package:navbar_screens/emergency.dart';
 import 'package:navbar_screens/home1.dart';
+import 'package:navbar_screens/login.dart';
 import 'package:navbar_screens/phone.dart';
 import 'package:navbar_screens/setting.dart';
 
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: const RegisterUser(),
+          home: const loginUser(),
         ),
       ),
     );
