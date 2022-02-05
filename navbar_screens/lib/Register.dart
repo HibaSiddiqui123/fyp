@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RegisterUser extends StatefulWidget {
   const RegisterUser({Key? key}) : super(key: key);
@@ -58,8 +59,8 @@ class _RegisterUserState extends State<RegisterUser> {
               Align(
                 alignment: Alignment.topLeft,
                 child: SizedBox(
-                  width: 80,
-                  height: 90,
+                  width: 80.w,
+                  height: 90.h,
                   child: //Image.network('https://i.etsystatic.com/7673973/r/il/64bd6a/2996029273/il_570xN.2996029273_tbtq.jpg'),)
                       Image.asset('assets/logo3.png'),
                 ),
@@ -80,8 +81,11 @@ class _RegisterUserState extends State<RegisterUser> {
                   Padding(
                     padding: const EdgeInsets.only(
                         right: 10, left: 0, top: 0, bottom: 0),
-                    child: Image.asset('assets/womyn2.jpg',
-                        width: 140, height: 200),
+                    child: Image.asset(
+                      'assets/womyn2.jpg',
+                      width: 140.w,
+                      height: 200.h,
+                    ),
                   ),
                 ]),
               ),
@@ -113,8 +117,8 @@ class _RegisterUserState extends State<RegisterUser> {
                   ),
                   const SizedBox(height: 15),
                   Container(
-                    width: 300,
-                    height: 50,
+                    width: 300.w,
+                    height: 50.h,
                     child: RaisedButton(
                         //splashColor: Colors.red,
                         elevation: 7,
@@ -157,8 +161,8 @@ Widget textfield(
     required bool obscureText,
     required TextEditingController controller}) {
   return Container(
-    width: 300,
-    height: 50,
+    width: 300.w,
+    height: 50.h,
     child: TextFormField(
       controller: controller,
       obscureText: obscureText,
