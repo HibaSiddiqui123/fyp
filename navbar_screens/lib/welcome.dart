@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:navbar_screens/Register.dart';
+import 'package:navbar_screens/login.dart';
 
-import 'signin.dart';
-import 'signup.dart';
 
 class Welcome extends StatelessWidget {
   const Welcome({Key? key}) : super(key: key);
@@ -39,9 +38,9 @@ class Welcome extends StatelessWidget {
                   ),
                 ),
                 Row(children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 110, left: 15),
-                    child: const Text(
+                  const Padding(
+                    padding: EdgeInsets.only(top: 110, left: 15),
+                    child: Text(
                       "Women Safer",
                       style: TextStyle(
                           fontStyle: FontStyle.italic,
@@ -59,7 +58,7 @@ class Welcome extends StatelessWidget {
 
                 // ignore: avoid_unnecessary_containers
 
-                SizedBox(height: 50),
+                const SizedBox(height: 50),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -74,30 +73,30 @@ class Welcome extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10),
                               //side: BorderSide(color: Colors.red,width: 2),
                             ),
-                            child: Text(
+                            child: const Text(
                               "Login",
                               style: TextStyle(
                                   fontSize: 20,
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   shadows: [
-                                    Shadow(
+                                    const Shadow(
                                       blurRadius: 5.0,
                                       color: Colors.grey,
-                                      offset: Offset(2.0, 2.0),
+                                      offset: const Offset(2.0, 2.0),
                                     ),
                                   ]),
                             ),
                             onPressed: () {
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //       builder: (context) => LoginPage()),
-                              // );
+                               Navigator.push(
+                                 context,
+                                 MaterialPageRoute(
+                                     builder: (context) =>  loginUser()),
+                               );
                             })),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 34,
                 ),
                 Container(
@@ -111,7 +110,7 @@ class Welcome extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           //side: BorderSide(color: Colors.red,width: 2),
                         ),
-                        child: Text(
+                        child: const Text(
                           "Register",
                           style: TextStyle(
                               fontSize: 17,
@@ -121,7 +120,7 @@ class Welcome extends StatelessWidget {
                                 Shadow(
                                   blurRadius: 5.0,
                                   color: Colors.grey,
-                                  offset: Offset(2.0, 2.0),
+                                  offset: const Offset(2.0, 2.0),
                                 ),
                               ]),
                         ),
@@ -129,16 +128,16 @@ class Welcome extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => RegisterUser()));
+                                  builder: (context) =>  RegisterUser()));
                         })),
-                Expanded(
-                  child: Align(
+                const Expanded(
+                  child: const Align(
                     alignment: FractionalOffset.bottomCenter,
                     child:
                         Text('By continuing you agree to Terms and Conditions'),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 )
               ]),

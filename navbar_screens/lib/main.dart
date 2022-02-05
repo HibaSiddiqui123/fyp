@@ -10,9 +10,9 @@ import 'package:navbar_screens/home1.dart';
 import 'package:navbar_screens/login.dart';
 import 'package:navbar_screens/phone.dart';
 import 'package:navbar_screens/setting.dart';
-
+import 'splash1.dart';
 import 'addcontact.dart';
-import 'splash2.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: const loginUser(),
+        home:Splash(),
         ),
       ),
     );
