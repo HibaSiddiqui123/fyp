@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:navbar_screens/Register.dart';
 import 'package:navbar_screens/main.dart';
+import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 
 class loginUser extends StatefulWidget {
   const loginUser({Key? key}) : super(key: key);
