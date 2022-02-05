@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "853607279259",
+    "project_id": "womensafer",
+    "storage_bucket": "womensafer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:853607279259:android:fa7f2d397e9b64c644b43e",
+        "android_client_info": {
+          "package_name": "com.example.navbar_screens"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "853607279259-7ll7rjbhu1g5pi1cjcuvmuph4092fvmm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdw_Tg4SjhfxWVA4WrUT7gu_AMGZnder0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "853607279259-7ll7rjbhu1g5pi1cjcuvmuph4092fvmm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,8 +1,10 @@
 //@dart=2.9
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:navbar_screens/Register.dart';
 import 'package:navbar_screens/emergency.dart';
 import 'package:navbar_screens/home1.dart';
 import 'package:navbar_screens/phone.dart';
@@ -11,7 +13,9 @@ import 'package:navbar_screens/setting.dart';
 import 'addcontact.dart';
 import 'splash2.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -21,7 +25,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return  MediaQuery(
+    return MediaQuery(
       data: MediaQueryData.fromWindow(WidgetsBinding.instance.window),
       child: ScreenUtilInit(
         designSize: const Size(360, 690),
@@ -33,7 +37,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: Splashh(),
+          home: const RegisterUser(),
         ),
       ),
     );

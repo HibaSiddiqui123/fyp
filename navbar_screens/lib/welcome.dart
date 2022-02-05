@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:navbar_screens/Register.dart';
 
 import 'signin.dart';
 import 'signup.dart';
@@ -88,11 +89,11 @@ class Welcome extends StatelessWidget {
                                   ]),
                             ),
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LoginPage()),
-                              );
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //       builder: (context) => LoginPage()),
+                              // );
                             })),
                   ],
                 ),
@@ -128,7 +129,7 @@ class Welcome extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Signup()));
+                                  builder: (context) => RegisterUser()));
                         })),
                 Expanded(
                   child: Align(
