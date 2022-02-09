@@ -12,18 +12,21 @@
 //   final _emailController = TextEditingController();
 //   final _passController = TextEditingController();
 
-//   GlobalKey<ScaffoldState> globalKey = GlobalKey<ScaffoldState>();
-//   Future<FirebaseUser?> login(String phonenumber, String pass) async {
-//     FirebaseAuth _auth = FirebaseAuth.instance;
+//   // GlobalKey<ScaffoldState> globalKey = GlobalKey<ScaffoldState>();
+//   // Future<FirebaseUser> login(String phonenumber, String pass) async {
+//     login()async{
+//     final FirebaseAuth _auth = FirebaseAuth.instance;
 //     try {
-//       AuthResult result = await _auth.signInWithEmailAndPassword(
-//           email: _emailController.text, password: _passController.text);
-//       FirebaseUser user = result.user;
+//       final UserCredential user = await _auth.signInWithEmailAndPassword(
+//         email: _emailController.text, password: _passController.text);
+//       // AuthResult result = await _auth.signInWithEmailAndPassword(
+//           // email: _emailController.text, password: _passController.text);
+//       // FirebaseUser user = result.user;
 
 //       return user;
 //     } catch (e) {
 //       print(e);
-//       return null;
+//       // return null;
 //     }
 //   }
 //   //validation
@@ -31,14 +34,21 @@
 //   void validation() {
 //     if (_passController.text.trim().isEmpty ||
 //         _passController.text.trim() == null) {
-//       globalKey.currentState!
-//           .showSnackBar(SnackBar(content: Text("password is empty")));
-//       return;
+//       // globalKey.currentState!
+//           // .showSnackBar(SnackBar(content: Text("password is empty")));
+//                 // return;
+
+//       Container(
+//         child: const Text("Empty"),
+//       );
 //     } else if (_emailController.text.trim().isEmpty ||
 //         _emailController.text.trim() == null) {
-//       globalKey.currentState!
-//           .showSnackBar(SnackBar(content: Text("email is empty")));
-//       return;
+//       // globalKey.currentState!
+//       //     .showSnackBar(SnackBar(content: Text("email is empty")));
+//       // return;
+//         Container(
+//           child: const Text("Empty")
+//         );
 //     }
 //   }
 
@@ -81,7 +91,7 @@
 //     return Scaffold(
 //         resizeToAvoidBottomInset: false,
 //         extendBodyBehindAppBar: true,
-//         key: globalKey,
+//         // key: globalKey,
 //         body: SafeArea(
 //           child: Container(
 //             color: Colors.white,
@@ -171,26 +181,27 @@
 //                                     ),
 //                                   ]),
 //                             ),
-//                             onPressed: () async {
-//                               final email =
-//                                   _emailController.text.toString().trim();
-//                               final pass =
-//                                   _passController.text.toString().trim();
-//                               FirebaseUser? user = await login(email, pass);
+//                             onPressed: () {
+//                               login();
+//                               // final email =
+//                               //     _emailController.text.toString().trim();
+//                               // final pass =
+//                               //     _passController.text.toString().trim();
+//                               // FirebaseUser? user = await login(email, pass);
 
-//                               if (user != null) {
+//                               // if (user != null) {
 //                                 /* Navigator.of(context).push(MaterialPageRoute(
 //                  builder:(context)=>
 //                  ));*/
 
-//                               } else {
-//                                 validation();
-//                                 Navigator.of(context).pushReplacement(
-//                                   MaterialPageRoute(
-//                                     builder: (context) => homescreen(),
-//                                   ),
-//                                 );
-//                               }
+//                               // } else{
+//                               //   validation();
+//                               //   Navigator.of(context).pushReplacement(
+//                               //     MaterialPageRoute(
+//                               //       builder: (context) => homescreen(),
+//                               //     ),
+//                               //   );
+//                               // }
 //                             })),
 //                     SizedBox(
 //                       height: 16,
@@ -213,13 +224,14 @@
 //                                   color: Colors.pinkAccent,
 //                                   fontWeight: FontWeight.bold),
 //                             ),
-//                             onTap: () {
-//                               Navigator.of(context).pushReplacement(
-//                                 MaterialPageRoute(
-//                                   builder: (context) => Signup(),
-//                                 ),
-//                               );
-//                             }),
+//                             // onTap: () {
+//                             //   Navigator.of(context).pushReplacement(
+//                             //     MaterialPageRoute(
+//                             //       builder: (context) => Signup(),
+//                             //     ),
+//                             //   );
+//                             // }
+//                             ),
 
 //                         //IconButton(onPressed: (){}, icon:Icons.gmail_acc)
 //                       ],

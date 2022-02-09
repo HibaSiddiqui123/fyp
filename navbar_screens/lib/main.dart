@@ -1,5 +1,4 @@
 //@dart=2.9
-
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +50,8 @@ class homescreen extends StatefulWidget {
   _homescreenState createState() => _homescreenState();
 }
 
-class _homescreenState extends State<homescreen> {
+class _homescreenState extends State<homescreen> {  
+  final navigationKey = GlobalKey<CurvedNavigationBarState>();
   int index = 0;
   final screens = [
     home1(),
@@ -60,7 +60,7 @@ class _homescreenState extends State<homescreen> {
     setting(),
     emegency(),
   ];
-
+  
   @override
   Widget build(BuildContext context) {
     final items = <Widget>[
@@ -94,13 +94,14 @@ class _homescreenState extends State<homescreen> {
         data: Theme.of(context)
             .copyWith(iconTheme: IconThemeData(color: Colors.white)),
         child: CurvedNavigationBar(
+          key: navigationKey,
           color: Colors.pinkAccent,
           backgroundColor: Colors.transparent,
           height: 60,
           animationCurve: Curves.easeInOut,
           animationDuration: Duration(milliseconds: 250),
           index: index,
-          items: items,
+          items: items,          
           onTap: (index) => setState(() => this.index = index),
         ),
       ),

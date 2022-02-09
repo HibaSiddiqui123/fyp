@@ -1,11 +1,16 @@
 import 'dart:async';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:navbar_screens/main.dart';
 import 'addcontact.dart';
+import 'home1.dart';
 import 'welcome.dart';
 import 'splash2.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 class Splash  extends StatefulWidget {
   const Splash ({ Key? key }) : super(key: key);
 
@@ -26,7 +31,10 @@ class _SplashState extends State<Splash> {
                                                          )
                                        )
          );
+
   }
+
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,11 +125,10 @@ class _SplashState extends State<Splash> {
            child: RaisedButton(elevation: 0,
            color: Colors.pink,
            child:Text("Skip Now",style: TextStyle(color: Colors.pink[100],fontSize: 20),),
-             onPressed: (){
-Navigator.of(context).push(MaterialPageRoute(
-                 builder:(context)=>Addcontacts()
+             onPressed: (){ 
+                  Navigator.of(context).push(MaterialPageRoute(
+                  builder:(context)=>Addcontacts()
                  ));
-
 
              })),
              Container(

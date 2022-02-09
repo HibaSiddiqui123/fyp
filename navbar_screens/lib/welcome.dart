@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:navbar_screens/home1.dart';
+import 'package:navbar_screens/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:navbar_screens/Register.dart';
 import 'package:navbar_screens/login.dart';
+import 'package:navbar_screens/main.dart';
 
 
 class Welcome extends StatelessWidget {
@@ -88,6 +92,10 @@ class Welcome extends StatelessWidget {
                                   ]),
                             ),
                             onPressed: () {
+                            if(FirebaseAuth.instance.currentUser != null){
+                              Navigator.pushAndRemoveUntil<dynamic>(context,MaterialPageRoute(builder: (BuildContext context)=> home1()), 
+                              (route) => false);
+                            }
                                Navigator.push(
                                  context,
                                  MaterialPageRoute(

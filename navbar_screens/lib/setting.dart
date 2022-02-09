@@ -1,19 +1,23 @@
-
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:navbar_screens/ProfileDetails.dart';
-import 'package:navbar_screens/Reports.dart';
 import 'package:navbar_screens/contact.dart';
+import 'package:navbar_screens/login.dart';
+import 'package:navbar_screens/main.dart';
 import 'package:navbar_screens/settings1.dart';
+import 'package:navbar_screens/terms_and_conditions.dart';
 
 class setting extends StatelessWidget {
+ 
 
   final Padding=EdgeInsets.symmetric(horizontal: 20);
 
   @override
   Widget build(BuildContext context) {
-    final name='Hiba Siddiqui';
-    final email='hiba123@abc.com';
+    final name= FirebaseAuth.instance.currentUser!.displayName;
+    final email = FirebaseAuth.instance.currentUser!.email;
+    //final email='hiba123@abc.com';
+    // String? name = FirebaseAuth.instance.currentUser!.displayName;
     // final AssetImage='assets\womyn3.jpg';
     return Drawer(
        child: Material(
@@ -24,8 +28,8 @@ class setting extends StatelessWidget {
   
   buildHeader(
 // assetImage: AssetImage,
-  name:name,
-  email:email,
+  name : name.toString(),
+  email: email.toString(),
 
 ),
 
@@ -42,26 +46,27 @@ class setting extends StatelessWidget {
              ),
               const SizedBox(height: 15,),
              buildmenuitem(
-               text:'Reports',
-               icon:Icons.report_outlined,
-                 onClicked: ()=>selecteditem(context, 1),
-             ),
- const SizedBox(height: 15,),
-             buildmenuitem(
                text:'Profile Details',
                icon:Icons.work_outline_rounded,
+                 onClicked: ()=>selecteditem(context, 1),
+             ),                            
+             const SizedBox(height: 15,),
+             buildmenuitem(
+               text:'Terms And Conditions',
+               icon:Icons.report_outlined,
                  onClicked: ()=>selecteditem(context, 2),
              ),
-              const SizedBox(height: 15,),
-             buildmenuitem(
-               text:'Settings',
-               icon:Icons.settings_applications_outlined,
-                 onClicked: ()=>selecteditem(context, 3),
-             ),
+            //   const SizedBox(height: 15,),
+            //  buildmenuitem(
+            //    text:'Settings',
+            //    icon:Icons.settings_applications_outlined,
+            //      onClicked: ()=>selecteditem(context, 3),
+            //  ),
              const SizedBox(height: 24,),
              Divider(color: Colors.white),
              const SizedBox(height: 24,) ,
-             buildmenuitem(text: 'LOGOUT', icon: Icons.logout_sharp),
+             buildmenuitem(text: 'LOGOUT', icon: Icons.logout_sharp,
+             onClicked: () => selecteditem(context, 3),),
              
              
 
@@ -118,19 +123,20 @@ onTap: onClicked,
   );
 }
 void selecteditem(BuildContext context, int index){
-  Navigator.of(context).pop();
+  // Navigator.of(context).pop();
+  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>homescreen()));
   switch(index){
     case 0:
     Navigator.of(context).push(MaterialPageRoute(builder: (context)=>contact(),));
  break;
  case 1:
- Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Reports(),));
- break;
- case 2:
  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ProfileDetails(),));
  break;
+ case 2:
+ Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Terms_And_Conditions(),));
+ break;
  case 3:
- Navigator.of(context).push(MaterialPageRoute(builder: (context)=>settings1(),));
+ Navigator.of(context).push(MaterialPageRoute(builder: (context)=>loginUser(),));
  break;
   }
 }
