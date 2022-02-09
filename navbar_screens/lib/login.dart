@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:navbar_screens/Register.dart';
@@ -12,6 +13,18 @@ class loginUser extends StatefulWidget {
 }
 
 class _loginUserState extends State<loginUser> {
+  final firebaseInstance = FirebaseFirestore.instance;
+  Future<void> getUsername() async {
+    if (FirebaseAuth.instance.currentUser != null) {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>homescreen()));    
+    } 
+  }
+  @override
+  void initState() {
+    getUsername();
+    super.initState();  
+  }
+
   TextEditingController emailController = TextEditingController(text: "talha.wahid15@gmail.com");
   TextEditingController passController = TextEditingController(text: "talha1234");
   loginUser() async {

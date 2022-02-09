@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'login.dart';
+
 class RegisterUser extends StatefulWidget {
   const RegisterUser({Key? key}) : super(key: key);
 
@@ -44,6 +46,11 @@ class _RegisterUserState extends State<RegisterUser> {
       emailController.clear();
       passController.clear();
       phonenumberController.clear();
+      Navigator.push(
+                                 context,
+                                 MaterialPageRoute(
+                                     builder: (context) =>  loginUser()),
+                               );
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           print('The password provided is too weak.');

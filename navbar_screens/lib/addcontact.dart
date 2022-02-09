@@ -1,13 +1,17 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:navbar_screens/home1.dart';
+import 'package:navbar_screens/main.dart';
 import 'splash1.dart';
 import 'welcome.dart';
 class Addcontacts extends StatelessWidget {
+  GlobalKey<CurvedNavigationBarState> navigationKey = GlobalKey();
  final _usernameController =TextEditingController(); 
  final _phonenumberController =TextEditingController();
  final _relationController =TextEditingController();
@@ -96,7 +100,26 @@ if(_relationController.text.trim().isEmpty || _relationController.text.trim() ==
     return Scaffold(
       resizeToAvoidBottomInset: false,
        extendBodyBehindAppBar: true,
-      
+      appBar: AppBar(
+              toolbarHeight: MediaQuery.of(context).size.height * 0.08,
+              backgroundColor: Colors.pinkAccent,
+              elevation: 0.0,
+              title: Center(
+                child: Row(
+                  children: [
+                    SizedBox(width: 55.0),
+                    Text(
+                      "Add Emergency Contact",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            backgroundColor: Colors.white,
        body: SafeArea(
          child: Container(
              //width: double.infinity,

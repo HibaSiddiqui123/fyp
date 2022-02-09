@@ -92,10 +92,7 @@ class Welcome extends StatelessWidget {
                                   ]),
                             ),
                             onPressed: () {
-                            if(FirebaseAuth.instance.currentUser != null){
-                              Navigator.pushAndRemoveUntil<dynamic>(context,MaterialPageRoute(builder: (BuildContext context)=> home1()), 
-                              (route) => false);
-                            }
+                            
                                Navigator.push(
                                  context,
                                  MaterialPageRoute(

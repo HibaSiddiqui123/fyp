@@ -20,7 +20,7 @@ class _emegencyState extends State<emegency> {
 PreferredSizeWidget appBar(){
   return AppBar(
     backgroundColor: Colors.pink[400],
-    title: const Text("Notifications Screen"),
+    title: const Text("Your Notifications"),
   );
 }
 
@@ -82,12 +82,19 @@ Widget message(int index){
           fontWeight: FontWeight.bold,
         ),
         children: [
-            TextSpan(
-              text: "Notification Description",
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-              ),
-            )
+          WidgetSpan(
+  child: Container(
+    //color: Colors.red,
+    padding: EdgeInsets.symmetric(horizontal: 8.0),
+    child: Text("Notification Description"),
+  )
+)
+            // TextSpan(
+            //   text: "Notification Description",
+            //   style: TextStyle(
+            //     fontWeight: FontWeight.w400,
+            //   ),
+            // )
         ]
       ),
     ),

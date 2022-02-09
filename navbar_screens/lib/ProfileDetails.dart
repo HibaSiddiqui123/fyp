@@ -17,11 +17,19 @@ class ProfileDetails extends StatefulWidget {
 }
 
 class _ProfileDetailsState extends State<ProfileDetails> {
-  Stream<DocumentSnapshot>? _stream;
+  var image = "";
   @override
   void initState() {
-    // Only create the stream once
-    _stream = firebaseInstance.collection('users').doc(auth.currentUser!.uid).snapshots();
+    firebaseInstance.collection('users').doc(auth.currentUser!.uid).get().then((value) {
+      setState(() {
+        image = value['image'];
+        nameController.text = value['userName'];
+        emailController.text = value['email'];
+        contactController.text = value['phonenumber'];
+        aboutController.text = value['aboutName'];
+        addressController.text = value['addressName'];
+      });
+    });
     super.initState();
   }
   final TextEditingController nameController = TextEditingController();
@@ -110,30 +118,14 @@ class _ProfileDetailsState extends State<ProfileDetails> {
               ),
             ),
             backgroundColor: Colors.white,
-      body: StreamBuilder<DocumentSnapshot>(
-        stream: _stream,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(
-                  color: Colors.blue,
-                ),
-              );
-            }
-          if(snapshot.hasData)
-          {
-              nameController.text = snapshot.data!.get('userName');
-              emailController.text = snapshot.data!.get('email');
-              contactController.text = snapshot.data!.get('phonenumber');
-              addressController.text = snapshot.data!.get('address');
-              aboutController.text = snapshot.data!.get('about');
-          return Padding(
+      body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
               child: Form(
                 key: _globalkey,
                 child: ListView(
                   children: <Widget>[
-                      profileImage(snapshot.data!.get('image').toString()),
+                    
+                      profileImage(image),
                       const SizedBox(height: 20.0),
                       buildTextField("Full Name", "Alexa", false, nameController),
                       buildTextField("Email", "Alexa@abc.com", false, emailController),
@@ -159,17 +151,8 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                   ],
                 ),
               ),
-          );
-          }
-          else
-          {
-            return Container(
-              child: Center(
-                child: Text("No Data Found!"),
-              ),
-            );
-          }
-          }
+          
+          
           
                   
       ),
@@ -290,7 +273,7 @@ shape: BoxShape.circle,
 image: DecorationImage(
   fit: BoxFit.cover,  
   image:
-    passedImage == null ? (imageFile == null ? AssetImage('womyn3.jpg') as ImageProvider : FileImage(File(imageFile!.path))) : NetworkImage(passedImage.toString()),
+    passedImage == "" ? (imageFile == null ? AssetImage('womyn3.jpg') as ImageProvider : FileImage(File(imageFile!.path))) : NetworkImage(passedImage.toString()),
       ),
                               ),
                             ),
