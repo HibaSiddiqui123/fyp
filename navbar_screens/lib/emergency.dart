@@ -19,9 +19,19 @@ class _emegencyState extends State<emegency> {
 
 PreferredSizeWidget appBar(){
   return AppBar(
-    backgroundColor: Colors.pink[400],
-    title: const Text("Your Notifications"),
-  );
+              toolbarHeight: MediaQuery.of(context).size.height * 0.08,
+              backgroundColor: Colors.pinkAccent,
+              elevation: 0.0,
+              centerTitle: true,
+              title: Text(
+                      "Your Notifications",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
+                    ),
+                  
+            );
 }
 
 Widget listView(){

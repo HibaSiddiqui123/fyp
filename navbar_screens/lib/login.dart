@@ -14,14 +14,8 @@ class loginUser extends StatefulWidget {
 
 class _loginUserState extends State<loginUser> {
   final firebaseInstance = FirebaseFirestore.instance;
-  Future<void> getUsername() async {
-    if (FirebaseAuth.instance.currentUser != null) {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>homescreen()));    
-    } 
-  }
   @override
   void initState() {
-    getUsername();
     super.initState();  
   }
 

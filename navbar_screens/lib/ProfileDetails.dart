@@ -18,18 +18,35 @@ class ProfileDetails extends StatefulWidget {
 
 class _ProfileDetailsState extends State<ProfileDetails> {
   var image = "";
+  
+  void getData() async {
+    firebaseInstance.collection('users').doc(auth.currentUser!.uid).get().then((value) {
+      setState(() {
+        image = value['image'];
+        print(image);
+        nameController.text = value['userName'];
+        emailController.text = value['email'];
+        contactController.text = value['phonenumber'];
+        aboutController.text = value['about'];
+        addressController.text = value['address'];
+      });
+    });
+  }
+
   @override
   void initState() {
     firebaseInstance.collection('users').doc(auth.currentUser!.uid).get().then((value) {
       setState(() {
         image = value['image'];
+        print(image);
         nameController.text = value['userName'];
         emailController.text = value['email'];
         contactController.text = value['phonenumber'];
-        aboutController.text = value['aboutName'];
-        addressController.text = value['addressName'];
+        aboutController.text = value['about'];
+        addressController.text = value['address'];
       });
     });
+    
     super.initState();
   }
   final TextEditingController nameController = TextEditingController();
@@ -52,12 +69,6 @@ class _ProfileDetailsState extends State<ProfileDetails> {
     
   void Submit() async{
   try {
-  firebase_storage.FirebaseStorage storage =
-  firebase_storage.FirebaseStorage.instance;
-  firebase_storage.Reference ref =
-  firebase_storage.FirebaseStorage.instance.ref('profileimages/${auth.currentUser!.uid}');
-  if(imageFile == null)
-  {
   await firebaseInstance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).set({
         'userName': nameController.text,
         'email': emailController.text,
@@ -65,19 +76,19 @@ class _ProfileDetailsState extends State<ProfileDetails> {
         'address' : addressController.text,
         'about' : aboutController.text,
       }, SetOptions(merge: true));  
-  }
-  else
+  if(imageFile != null)
   {
+  
+  firebase_storage.FirebaseStorage storage =
+  firebase_storage.FirebaseStorage.instance;
+  firebase_storage.Reference ref =
+  firebase_storage.FirebaseStorage.instance.ref('profileimages/${auth.currentUser!.uid}');
+  
   File file = File(imageFile!.path);
   await ref.putFile(file);
   String downloadURL = await ref.getDownloadURL();
   print(downloadURL);
   await firebaseInstance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).set({
-        'userName': nameController.text,
-        'email': emailController.text,
-        'phonenumber': contactController.text,
-        'address' : addressController.text,
-        'about' : aboutController.text,
         "image": downloadURL,
       }, SetOptions(merge: true));
   
@@ -102,10 +113,10 @@ class _ProfileDetailsState extends State<ProfileDetails> {
               toolbarHeight: MediaQuery.of(context).size.height * 0.08,
               backgroundColor: Colors.pinkAccent,
               elevation: 0.0,
+              centerTitle: true,
               title: Center(
                 child: Row(
                   children: [
-                    SizedBox(width: 55.0),
                     Text(
                       "Profile Details",
                       style: TextStyle(
@@ -144,6 +155,16 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       ElevatedButton(
                         onPressed: () async{
                           Submit();
+                          firebaseInstance.collection('users').doc(auth.currentUser!.uid).get().then((value) {
+      setState(() {
+        image = value['image'];
+        nameController.text = value['userName'];
+        emailController.text = value['email'];
+        contactController.text = value['phonenumber'];
+        aboutController.text = value['about'];
+        addressController.text = value['address'];
+      });
+    });
                         }, 
                         child: Text("UPDATE" ),style:ElevatedButton.styleFrom(primary: Colors.pinkAccent,textStyle:TextStyle(fontSize: 20,fontWeight: FontWeight.bold))
                       )
@@ -273,7 +294,7 @@ shape: BoxShape.circle,
 image: DecorationImage(
   fit: BoxFit.cover,  
   image:
-    passedImage == "" ? (imageFile == null ? AssetImage('womyn3.jpg') as ImageProvider : FileImage(File(imageFile!.path))) : NetworkImage(passedImage.toString()),
+   imageFile == null ? ( passedImage == "" ? AssetImage('womyn3.jpg') as ImageProvider : NetworkImage(passedImage.toString())) : FileImage(File(imageFile!.path)),
       ),
                               ),
                             ),

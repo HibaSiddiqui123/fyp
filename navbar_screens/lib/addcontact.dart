@@ -98,113 +98,110 @@ if(_relationController.text.trim().isEmpty || _relationController.text.trim() ==
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
        extendBodyBehindAppBar: true,
       appBar: AppBar(
               toolbarHeight: MediaQuery.of(context).size.height * 0.08,
               backgroundColor: Colors.pinkAccent,
               elevation: 0.0,
-              title: Center(
-                child: Row(
-                  children: [
-                    SizedBox(width: 55.0),
-                    Text(
+              centerTitle: true,
+              title: Text(
                       "Add Emergency Contact",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
                       ),
                     ),
-                  ],
-                ),
-              ),
             ),
             backgroundColor: Colors.white,
        body: SafeArea(
-         child: Container(
-             //width: double.infinity,
-             
-        
-         child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-             
-            children:[
-         
-         SizedBox(height:80),
-          Text("Add Contacts",style: TextStyle(fontSize: 32,color: Colors.grey[700],fontWeight:FontWeight.bold),),
-         
-          
-        
-               Center(
-                 child: Column(
-                     mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                     
-                      
-                     children: [
-                      SizedBox(height:45),
-                       textfield(hintText: "Name",
-                    
-                       
-                       obscureText: false, controller: _usernameController,
-                     
-                       ),
-                        SizedBox(height:20),
-                       textfield(hintText: "Phone#",
-                       
-                       obscureText: false, controller: _phonenumberController,
-                     
-                       ),
-                      
-                       SizedBox(height:20),
-                       textfield(hintText: "Relation",
-                      
-                       obscureText: false, controller: _relationController,
-                      
-                       ),
-                        SizedBox(height:20),//SizedBox(height:1),
-                       Container(
-                         width: 300,
-                 height: 50,
-                        child: RaisedButton(
-                            //splashColor: Colors.red,
-                 elevation: 7,
-                   color: Colors.grey[300],
-                   shape: RoundedRectangleBorder(
-                     borderRadius: BorderRadius.circular(10),
-                     //side: BorderSide(color: Colors.red,width: 2),
-                     
-                     ),
-                     child: Text("Submit",style: TextStyle(fontSize: 17,color: Colors.pinkAccent,fontWeight:FontWeight.bold,shadows: [
-                    Shadow(
-                        blurRadius: 5.0,
-                      color: Colors.grey,
-                      offset: Offset(2.0,2.0),
-                        ),
-                 ]),),
-                           onPressed: () async {
-                             add();
-                           var snackBar = SnackBar(
-          content: Text("Contact Added!"),
-          action: SnackBarAction(
-            label: "Close",
-            onPressed: () {},
-          ),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);          
-            //  validation();
-           }
-
-                           ),
-                           ),
-                           SizedBox(height:30),
-
-                     ],
-                    
-                   ),
-               ),
-            ])
+         child: SingleChildScrollView(
+           reverse: true,
+           child: Container(
+               //width: double.infinity,
+               
+                 
+           child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+               
+              children:[
+           
+           SizedBox(height:80),
+            Text("Add Contacts",style: TextStyle(fontSize: 32,color: Colors.grey[700],fontWeight:FontWeight.bold),),
+           
             
-             ),
+                 
+                 Center(
+                   child: Column(
+                       mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                       
+                        
+                       children: [
+                        SizedBox(height:45),
+                         textfield(hintText: "Name",
+                      
+                         
+                         obscureText: false, controller: _usernameController,
+                       
+                         ),
+                          SizedBox(height:20),
+                         textfield(hintText: "Phone#",
+                         
+                         obscureText: false, controller: _phonenumberController,
+                       
+                         ),
+                        
+                         SizedBox(height:20),
+                         textfield(hintText: "Relation",
+                        
+                         obscureText: false, controller: _relationController,
+                        
+                         ),
+                          SizedBox(height:20),//SizedBox(height:1),
+                         Container(
+                           width: 300,
+                   height: 50,
+                          child: RaisedButton(
+                              //splashColor: Colors.red,
+                   elevation: 7,
+                     color: Colors.grey[300],
+                     shape: RoundedRectangleBorder(
+                       borderRadius: BorderRadius.circular(10),
+                       //side: BorderSide(color: Colors.red,width: 2),
+                       
+                       ),
+                       child: Text("Submit",style: TextStyle(fontSize: 17,color: Colors.pinkAccent,fontWeight:FontWeight.bold,shadows: [
+                      Shadow(
+                          blurRadius: 5.0,
+                        color: Colors.grey,
+                        offset: Offset(2.0,2.0),
+                          ),
+                   ]),),
+                             onPressed: () async {
+                               add();
+                             var snackBar = SnackBar(
+            content: Text("Contact Added!"),
+            action: SnackBarAction(
+              label: "Close",
+              onPressed: () {},
+            ),
+                 );
+                 ScaffoldMessenger.of(context).showSnackBar(snackBar);          
+              //  validation();
+             }
+         
+                             ),
+                             ),
+                             SizedBox(height:30),
+         
+                       ],
+                      
+                     ),
+                 ),
+              ])
+              
+               ),
+         ),
            ),
          
             

@@ -56,12 +56,10 @@ class _home1State extends State<home1> {
               backgroundColor: Colors.pinkAccent),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Expanded(
-              child: SvgPicture.asset(
+            child: SvgPicture.asset(
                 "assets/pink-shield.svg",
                 height: 300,
               ),
-            ),
           ),
           Text(
             '"Happiness has many roots, but none more important than SECURITY..!"',

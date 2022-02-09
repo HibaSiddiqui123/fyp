@@ -55,20 +55,15 @@ Future<void> display() async{
               toolbarHeight: MediaQuery.of(context).size.height * 0.08,
               backgroundColor: Colors.pinkAccent,
               elevation: 0.0,
-              title: Center(
-                child: Row(
-                  children: [
-                    SizedBox(width: 55.0),
-                    Text(
+              centerTitle: true,
+              title: Text(
                       "Emergency Contacts",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
                       ),
                     ),
-                  ],
-                ),
-              ),
+                  
             ),
             backgroundColor: Colors.white,
             body:Container(
