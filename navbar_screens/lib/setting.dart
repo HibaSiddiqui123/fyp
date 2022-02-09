@@ -81,7 +81,7 @@ class _settingState extends State<setting> {
               const SizedBox(height: 15,),
              buildmenuitem(
                text:'Privacy Policy',
-               icon:Icons.report_outlined,
+               icon:Icons.privacy_tip_rounded,
                  onClicked: ()=>selecteditem(context, 4),
              ),
              const SizedBox(height: 24,),

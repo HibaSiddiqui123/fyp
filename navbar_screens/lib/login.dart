@@ -19,8 +19,8 @@ class _loginUserState extends State<loginUser> {
     super.initState();  
   }
 
-  TextEditingController emailController = TextEditingController(text: "talha.wahid15@gmail.com");
-  TextEditingController passController = TextEditingController(text: "talha1234");
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passController = TextEditingController();
   loginUser() async {
     try {
          UserCredential userCredential = await FirebaseAuth.instance
