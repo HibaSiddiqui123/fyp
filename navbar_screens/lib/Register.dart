@@ -33,8 +33,9 @@ class _RegisterUserState extends State<RegisterUser> {
         'userName': usernameController.text,
         'email': emailController.text,
         'number': phonenumberController.text,
-        'address': null,
-        'about': null,
+        'address': "",
+        'image': "",
+        'about': "",
         'phonenumber': phonenumberController.text,
         'date':
             '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}'
