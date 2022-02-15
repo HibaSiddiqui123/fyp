@@ -5,11 +5,9 @@ buildscript {
        targetSdkVersion    = 31                // or latest
        appCompatVersion    = "1.1.0"           // or latest
    }
-
     repositories {
         google()
         mavenCentral()
-        
     }
 
     dependencies {
@@ -23,7 +21,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-	maven {
+        maven {
            // [required] background_fetch
            url "${project(':background_fetch').projectDir}/libs"
        }
