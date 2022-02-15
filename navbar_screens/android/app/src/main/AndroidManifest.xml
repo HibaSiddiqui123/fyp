@@ -1,7 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.navbar_screens">
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
    <application
-        android:label="navbar_screens"
+        tools:replace="android:label"
+        android:label="WomenSafer"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

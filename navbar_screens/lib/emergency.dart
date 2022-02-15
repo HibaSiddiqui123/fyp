@@ -1,19 +1,59 @@
+import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class emegency extends StatefulWidget {
-  const emegency({ Key? key }) : super(key: key);
+class Emergency extends StatefulWidget {
+  const Emergency({ Key? key }) : super(key: key);
 
   @override
-  _emegencyState createState() => _emegencyState();
+  _EmergencyState createState() => _EmergencyState();
 }
 
-class _emegencyState extends State<emegency> {
+class _EmergencyState extends State<Emergency> {
+
+  List<NotificationModel> listNotifications = [];
+
+Future <void> display()async{
+  listNotifications = [];
+  try{
+  final List<NotificationModel>loadedProduct = [];
+  var response =  await FirebaseFirestore.instance.collection("notifications").where('user_id', isEqualTo: FirebaseAuth.instance.currentUser?.uid).get();
+  if(response.docs.length > 0){
+    response.docs.forEach((result) {
+      loadedProduct.add(NotificationModel(
+        title: result["title"],
+        message: result["message"],
+        timeStamp: result['created on'].toString()
+        ));
+    });
+    listNotifications.addAll(loadedProduct);
+      listNotifications.sort((a, b) => b.timeStamp.compareTo(a.timeStamp));
+
+    print(listNotifications);
+  }
+}
+catch (e){
+ print(e.toString());
+}}
   @override
+  void initState()
+  {
+    super.initState();
+    setState(() {
+    display();  
+    });
+    
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(),
-      body: listView(), 
+      body: FutureBuilder(
+        future: display(),
+        builder: (ctx, snapshot) {
+          return listView();
+        }), 
        );
   }
 
@@ -24,7 +64,7 @@ PreferredSizeWidget appBar(){
               elevation: 0.0,
               centerTitle: true,
               title: Text(
-                      "Your Notifications",
+                      "Notifications",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -36,12 +76,12 @@ PreferredSizeWidget appBar(){
 
 Widget listView(){
   return ListView.separated(itemBuilder: (context, index){
-    return ListViewItem(index);}, 
+    return ListViewItem(listNotifications[index]);}, 
     separatorBuilder: (context, index){
       return Divider(height: 0,);
-    }, itemCount: 15);
+    }, itemCount: listNotifications.length);
 }
-Widget ListViewItem(int index){
+Widget ListViewItem(NotificationModel notification){
   return Container(
     margin: EdgeInsets.symmetric(horizontal: 13, vertical: 10),
     child: Row(
@@ -54,8 +94,8 @@ Widget ListViewItem(int index){
             child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    message(index),
-                    timeAndDate(index),
+                    message(notification),
+                    timeAndDate(notification),
                   ],
             ),
           ),
@@ -78,53 +118,95 @@ Widget prefixIcon(){
   );
 }
 
-Widget message(int index){
+Widget message(NotificationModel notification){
   double textSize = 14;
   return Container(
-    child: RichText(
-      maxLines: 3,
-      overflow: TextOverflow.ellipsis,
-      text: TextSpan(
-        text: "Message",
-        style: TextStyle(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          notification.title,
+          style: TextStyle(
           fontSize: textSize,
           color: Colors.black,
           fontWeight: FontWeight.bold,
         ),
-        children: [
-          WidgetSpan(
-  child: Container(
-    //color: Colors.red,
-    padding: EdgeInsets.symmetric(horizontal: 8.0),
-    child: Text("Notification Description"),
-  )
-)
-            // TextSpan(
-            //   text: "Notification Description",
-            //   style: TextStyle(
-            //     fontWeight: FontWeight.w400,
-            //   ),
-            // )
-        ]
-      ),
+        ),
+        Text(
+          notification.message,
+          style: TextStyle(
+          fontSize: textSize,
+          color: Colors.black,
+          fontWeight: FontWeight.normal,
+        ),
+        ),
+      ],
     ),
+//     child: RichText(
+//       maxLines: 3,
+//       overflow: TextOverflow.ellipsis,
+//       text: TextSpan(
+//         text: notification.title,
+//         style: TextStyle(
+//           fontSize: textSize,
+//           color: Colors.black,
+//           fontWeight: FontWeight.bold,
+//         ),
+//         children: [
+//           WidgetSpan(
+//   child: Container(
+//     //color: Colors.red,
+//     padding: EdgeInsets.symmetric(horizontal: 20.0),
+//     child: Text(notification.message),
+//   )
+// )
+//             // TextSpan(
+//             //   text: "Notification Description",
+//             //   style: TextStyle(
+//             //     fontWeight: FontWeight.w400,
+//             //   ),
+//             // )
+//         ]
+//       ),
+//     ),
   );
 }
 
-Widget timeAndDate(int index){
+Widget timeAndDate(NotificationModel notification){
   return Container(
     margin: EdgeInsets.only(top: 5),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text("07-02-2022", style: TextStyle(
+        Text(notification.date, style: TextStyle(
           fontSize: 10,
         ),),
-        Text("02:30", style: TextStyle(
+        Text(notification.time, style: TextStyle(
           fontSize: 10
         ),)
       ],
     ),
   );
+}
+}
+
+class NotificationModel{
+  final String title;
+  final String message;
+  String date = '';
+  String time = '';
+  var timeStamp;
+
+NotificationModel({
+  required this.title,
+  required this.message,
+  required this.timeStamp,
+  
+})
+{
+date = DateFormat.yMMMMd().format(DateTime.fromMillisecondsSinceEpoch(int.parse(timeStamp)));
+time = DateFormat.Hm()
+        .format(DateTime.fromMillisecondsSinceEpoch(int.parse(timeStamp)));
+
 }
 }

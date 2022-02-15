@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:navbar_screens/Register.dart';
 import 'package:navbar_screens/main.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
+import 'package:navbar_screens/notification_api.dart';
 
 class loginUser extends StatefulWidget {
-  const loginUser({Key? key}) : super(key: key);
+  const loginUser({Key? key, String? payload}) : super(key: key);
 
   @override
   _loginUserState createState() => _loginUserState();
@@ -14,11 +15,7 @@ class loginUser extends StatefulWidget {
 
 class _loginUserState extends State<loginUser> {
   final firebaseInstance = FirebaseFirestore.instance;
-  @override
-  void initState() {
-    super.initState();  
-  }
-
+  
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
   loginUser() async {
@@ -26,10 +23,16 @@ class _loginUserState extends State<loginUser> {
          UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(
               email: emailController.text, 
-              password: passController.text,);
+              password: passController.text);
               
         if(userCredential != null){
+          
           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>homescreen()));
+          NotificationApi.showNotification(
+                                title: 'LoggedIn',
+                                body: 'Sucessfull',
+                                payload: '');
+                                notificatons();
       }
       
           
@@ -48,6 +51,35 @@ class _loginUserState extends State<loginUser> {
       }
     }
   }
+
+  notificatons()async{
+    try {
+      FirebaseFirestore.instance.collection("notifications").add({
+        'title': "Welcome Back",
+        'message': 'Login Sucessfull',
+        'user_id': FirebaseAuth.instance.currentUser!.uid,
+        'created on': DateTime.now().millisecondsSinceEpoch,
+        
+      });
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    // NotificationApi.init();
+      // listenNotifications();  
+  }
+  // void listenNotifications() => NotificationApi.onNotifications.stream.listen(onClickedNotification);
+// void onClickedNotification(String? payload) => 
+            // Navigator.of(context).push(MaterialPageRoute(builder: (context) => homescreen()));
+
+
+
+  
 
   @override
   Widget build(BuildContext context) {

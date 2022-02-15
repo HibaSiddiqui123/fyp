@@ -1,4 +1,4 @@
-
+import 'package:phone_number/phone_number.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
@@ -106,7 +106,7 @@ if(_relationController.text.trim().isEmpty || _relationController.text.trim() ==
               elevation: 0.0,
               centerTitle: true,
               title: Text(
-                      "Add Emergency Contact",
+                      "New Contact",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -127,7 +127,7 @@ if(_relationController.text.trim().isEmpty || _relationController.text.trim() ==
               children:[
            
            SizedBox(height:80),
-            Text("Add Contacts",style: TextStyle(fontSize: 32,color: Colors.grey[700],fontWeight:FontWeight.bold),),
+            Text("Add Contact",style: TextStyle(fontSize: 32,color: Colors.grey[700],fontWeight:FontWeight.bold),),
            
             
                  
@@ -178,16 +178,25 @@ if(_relationController.text.trim().isEmpty || _relationController.text.trim() ==
                           ),
                    ]),),
                              onPressed: () async {
+                            PhoneNumberUtil plugin = PhoneNumberUtil();
+                            String springFieldUSASimpleNoRegion = _phonenumberController.text;
+                            RegionInfo region = RegionInfo(code: 'PK', name: 'Pakistan', prefix: 92);
+                            bool isValid = await plugin.validate(springFieldUSASimpleNoRegion, region.code);
+                            if (isValid){
                                add();
                              var snackBar = SnackBar(
-            content: Text("Contact Added!"),
-            action: SnackBarAction(
-              label: "Close",
-              onPressed: () {},
-            ),
-                 );
+                            content: Text("Contact Added!"),
+                            action: SnackBarAction(
+                            label: "Close",
+                            onPressed: () {},
+                            ),);
                  ScaffoldMessenger.of(context).showSnackBar(snackBar);          
               //  validation();
+             }
+             else {
+               final snackBar = SnackBar(content: const Text("Invalid Number"));
+               ScaffoldMessenger.of(context).showSnackBar(snackBar); 
+             }
              }
          
                              ),
@@ -209,4 +218,3 @@ if(_relationController.text.trim().isEmpty || _relationController.text.trim() ==
         
   }
 }
-

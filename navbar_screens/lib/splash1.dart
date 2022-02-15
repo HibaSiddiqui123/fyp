@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:navbar_screens/main.dart';
+import 'package:navbar_screens/splash3.dart';
 import 'addcontact.dart';
 import 'home1.dart';
 import 'welcome.dart';
@@ -84,10 +85,10 @@ class _SplashState extends State<Splash> {
       
       TextSpan(text:'" Give us freedom not feardom! "\n\n', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.pinkAccent,fontSize: 20)),
   
-      TextSpan(text:   ' Get Started\n', style: TextStyle(fontStyle: FontStyle.normal,fontWeight: FontWeight.bold,color: Colors.grey,fontSize: 15)),
+      TextSpan(text:   ' Get Started\n', style: TextStyle(fontStyle: FontStyle.normal,fontWeight: FontWeight.bold,color: Colors.pinkAccent,fontSize: 15)),
     
-      TextSpan(text:   ' Millions of people use to turn\n', style: TextStyle(height:1.5,fontStyle: FontStyle.normal,fontWeight: FontWeight.bold,color: Colors.grey,fontSize: 20)),
-       TextSpan(text: '     their ideas into reality.', style: TextStyle(fontStyle: FontStyle.normal,fontWeight: FontWeight.bold,color: Colors.grey,fontSize: 20)),
+      TextSpan(text:   ' Millions of people use to turn\n', style: TextStyle(height:1.5,fontStyle: FontStyle.normal,fontWeight: FontWeight.bold,color: Colors.pinkAccent,fontSize: 20)),
+       TextSpan(text: '     their ideas into reality.', style: TextStyle(fontStyle: FontStyle.normal,fontWeight: FontWeight.bold,color: Colors.pinkAccent,fontSize: 20)),
     ]
   )
     
@@ -127,7 +128,7 @@ class _SplashState extends State<Splash> {
            child:Text("Skip Now",style: TextStyle(color: Colors.pink[100],fontSize: 20),),
              onPressed: (){ 
                   Navigator.of(context).push(MaterialPageRoute(
-                  builder:(context)=>Addcontacts()
+                  builder:(context)=>Splash3()
                  ));
 
              })),

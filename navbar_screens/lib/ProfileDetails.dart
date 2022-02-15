@@ -1,3 +1,4 @@
+import 'package:phone_number/phone_number.dart';
 
 import 'dart:io';
 
@@ -154,17 +155,27 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       // const SizedBox(height: 20.0),
                       ElevatedButton(
                         onPressed: () async{
+                          PhoneNumberUtil plugin = PhoneNumberUtil();
+                          String springFieldUSASimpleNoRegion = contactController.text;
+                          RegionInfo region = RegionInfo(code: 'PK', name: 'Pakistan', prefix: 92);
+                          bool isValid = await plugin.validate(springFieldUSASimpleNoRegion, region.code);
+                          if(isValid){
                           Submit();
                           firebaseInstance.collection('users').doc(auth.currentUser!.uid).get().then((value) {
-      setState(() {
-        image = value['image'];
-        nameController.text = value['userName'];
-        emailController.text = value['email'];
-        contactController.text = value['phonenumber'];
-        aboutController.text = value['about'];
-        addressController.text = value['address'];
-      });
-    });
+                          setState(() {
+                            image = value['image'];
+                            nameController.text = value['userName'];
+                            emailController.text = value['email'];
+                            contactController.text = value['phonenumber'];
+                            aboutController.text = value['about'];
+                            addressController.text = value['address'];
+                          });
+                        });
+                        }
+                        else{
+                          final snackBar = SnackBar(content: const Text("Inavlid Number"));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
                         }, 
                         child: Text("UPDATE" ),style:ElevatedButton.styleFrom(primary: Colors.pinkAccent,textStyle:TextStyle(fontSize: 20,fontWeight: FontWeight.bold))
                       )

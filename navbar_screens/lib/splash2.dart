@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:navbar_screens/splash3.dart';
 
 import 'welcome.dart';
 
@@ -18,7 +19,7 @@ class _SplashhState extends State<Splashh> {
     Timer(
         const Duration(seconds: 3),
         () => Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Welcome())));
+            context, MaterialPageRoute(builder: (context) => Splash3())));
   }
 
   @override

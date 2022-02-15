@@ -58,7 +58,7 @@ class _homescreenState extends State<homescreen> {
     phone(),
     Addcontacts(),
     setting(),
-    emegency(),
+    Emergency(),
   ];
   
   @override

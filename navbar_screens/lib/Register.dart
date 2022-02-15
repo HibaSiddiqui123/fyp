@@ -1,3 +1,5 @@
+import 'package:navbar_screens/notification_api.dart';
+import 'package:phone_number/phone_number.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -46,11 +48,7 @@ class _RegisterUserState extends State<RegisterUser> {
       emailController.clear();
       passController.clear();
       phonenumberController.clear();
-      Navigator.push(
-                                 context,
-                                 MaterialPageRoute(
-                                     builder: (context) =>  loginUser()),
-                               );
+      Navigator.push(context,MaterialPageRoute(builder: (context) =>  loginUser()));
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           print('The password provided is too weak.');
@@ -61,6 +59,31 @@ class _RegisterUserState extends State<RegisterUser> {
       print(e);
     }
   }
+
+notificatons()async{
+    try {
+      FirebaseFirestore.instance.collection("notifications").add({
+        'title': "Welcome!",
+        'message': "Your Account has been registered successfully!",
+        'user_id': FirebaseAuth.instance.currentUser!.uid,
+        'created on': DateTime.now().millisecondsSinceEpoch,
+        
+      });
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+  }
+
+
+  @override 
+    void initState(){
+      super.initState();
+      // NotificationApi.init();
+      // listenNotifications();
+    }
+// void listenNotifications() => NotificationApi.onNotifications.stream.listen(onClickedNotification);
+// void onClickedNotification(String? payload) => 
+          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => loginUser(payload: payload,)));
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +183,11 @@ class _RegisterUserState extends State<RegisterUser> {
                                   ),
                                 ]),
                           ),
-                          onPressed: () {
+                          onPressed: () async {
+                            PhoneNumberUtil plugin = PhoneNumberUtil();
+                            String springFieldUSASimpleNoRegion = phonenumberController.text;
+                            RegionInfo region = RegionInfo(code: 'PK', name: 'Pakistan', prefix: 92);
+                            bool isValid = await plugin.validate(springFieldUSASimpleNoRegion, region.code);
                             if(phonenumberController.text == "" || usernameController.text == "" || emailController.text == "" || passController.text == "")
                             {
                               var snackBar = SnackBar(
@@ -173,8 +200,15 @@ class _RegisterUserState extends State<RegisterUser> {
                               ScaffoldMessenger.of(context).showSnackBar(snackBar);          
                             }
                             else
+                            if(isValid)
                             {
                               register();
+                              notificatons();
+                              NotificationApi.showNotification(
+                                title: 'Registeration',
+                                body: 'Sucessfull',
+                                payload: ''
+                              );
                               var snackBar = SnackBar(
                                 content: Text("Registration Successfull!"),
                                 action: SnackBarAction(
@@ -183,6 +217,10 @@ class _RegisterUserState extends State<RegisterUser> {
                                 ),
                               );
                               ScaffoldMessenger.of(context).showSnackBar(snackBar);          
+                            }
+                            else{
+                              final snackBar = SnackBar(content: const Text("Inavlid Number"));
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
                             }
                           }),
                     ),

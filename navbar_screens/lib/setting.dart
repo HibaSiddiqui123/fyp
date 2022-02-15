@@ -60,7 +60,7 @@ class _settingState extends State<setting> {
              const SizedBox(height: 20,),
              buildmenuitem(
                
-               text:'My Contacts',
+               text:'Emergency Contacts',
                
                icon:Icons.contacts_outlined,
                onClicked: ()=>selecteditem(context, 0),

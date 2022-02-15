@@ -57,7 +57,7 @@ Future<void> display() async{
               elevation: 0.0,
               centerTitle: true,
               title: Text(
-                      "Emergency Contacts",
+                      "My Contacts",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
