@@ -1,9 +1,15 @@
+import 'dart:io';
+import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:navbar_screens/notification_api.dart';
 import 'package:phone_number/phone_number.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:future_progress_dialog/future_progress_dialog.dart';
 
 import 'login.dart';
 
@@ -19,71 +25,139 @@ class _RegisterUserState extends State<RegisterUser> {
   TextEditingController emailController = TextEditingController();
   TextEditingController phonenumberController = TextEditingController();
   TextEditingController passController = TextEditingController();
-
+  
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  Future<File> getImageFileFromAssets(String path) async {
+  final byteData = await rootBundle.load('assets/$path');
 
-  void register() async {
-    try {
-      UserCredential userCredential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailController.text,
-        password: passController.text,
-      );
-      User? user = userCredential.user;
+  final file = File('${(await getTemporaryDirectory()).path}/$path');
+  await file.writeAsBytes(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+
+  return file;
+  }
+String out = "";
+  Future<void> register() async {
+    
+    
+          
+    await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(
+      email: emailController.text,
+      password: passController.text,
+    )
+        .then((value) async {
+      User? user = value.user;
       user!.updateDisplayName(usernameController.text);
       await user.reload();
-      await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+      print("Registered Account");
+      firebase_storage.FirebaseStorage storage =
+              firebase_storage.FirebaseStorage.instance;
+          firebase_storage.Reference ref = firebase_storage
+              .FirebaseStorage.instance
+              .ref('profileimages/${user.uid}');
+
+          File f = await getImageFileFromAssets('womyn3.jpg');
+          await ref.putFile(f);
+          String downloadURL = await ref.getDownloadURL();
+          print(downloadURL);
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .set({
         'userName': usernameController.text,
         'email': emailController.text,
-        'number': phonenumberController.text,
-        'address': "",
-        'image': "",
-        'about': "",
+        'address': '',
+        'image': downloadURL,
+        'about': '',
+        'user_Id': FirebaseAuth.instance.currentUser!.uid,
         'phonenumber': phonenumberController.text,
         'date':
             '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}'
       });
-      usernameController.clear();
-      emailController.clear();
-      passController.clear();
-      phonenumberController.clear();
-      Navigator.push(context,MaterialPageRoute(builder: (context) =>  loginUser()));
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'weak-password') {
-          print('The password provided is too weak.');
-        } else if (e.code == 'email-already-in-use') {
-          print('The account already exists for that email.');
-        }
-      } catch (e) {
-      print(e);
+      print("Database Set");
+      notificatons();
+      NotificationApi.showNotification(
+          title: 'Registeration', body: 'Sucessfull', payload: '');
+      
+      setState(() {
+        out = "Account Registered Successfully!";
+      });
+      // Navigator.of(context).pushAndRemoveUntil(
+      //     MaterialPageRoute(builder: (context) => loginUser()),
+      //     (route) => false);
+    }).catchError((error, stackTrace) {
+      switch (error.code) {
+      case "ERROR_EMAIL_ALREADY_IN_USE":
+      case "account-exists-with-different-credential":
+      case "email-already-in-use":
+        out = "Email already used. Go to login page.";
+        break;
+      case "ERROR_WRONG_PASSWORD":
+      case "wrong-password":
+        out = "Wrong email/password combination.";
+        break;
+      case "weak-password":
+        out = "Weak Password!";
+        break;
+      case "ERROR_USER_NOT_FOUND":
+      case "user-not-found":
+        out = "No user found with this email.";
+        break;
+      case "ERROR_USER_DISABLED":
+      case "user-disabled":
+        out = "User disabled.";
+        break;
+      case "ERROR_TOO_MANY_REQUESTS":
+      case "operation-not-allowed":
+        out = "Too many requests to log into this account.";
+        break;
+      case "ERROR_OPERATION_NOT_ALLOWED":
+      case "operation-not-allowed":
+        out = "Server error, please try again later.";
+        break;
+      case "ERROR_INVALID_EMAIL":
+      case "invalid-email":
+        out = "Email address is invalid.";
+        break;
+      default:
+        out = "Login failed. Please try again.";
     }
+    });
+    print(out);
   }
 
-notificatons()async{
+  notificatons() async {
     try {
-      FirebaseFirestore.instance.collection("notifications").add({
+      await FirebaseFirestore.instance.collection("notifications").add({
         'title': "Welcome!",
         'message': "Your Account has been registered successfully!",
         'user_id': FirebaseAuth.instance.currentUser!.uid,
         'created on': DateTime.now().millisecondsSinceEpoch,
-        
       });
+      print("Notification Generated");
     } on Exception catch (e) {
       print(e.toString());
     }
   }
 
-
-  @override 
-    void initState(){
-      super.initState();
-      // NotificationApi.init();
-      // listenNotifications();
+  setData() async {
+    try {} on Exception catch (e) {
+      // TODO
+      print(e.toString());
+      CircularProgressIndicator();
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // NotificationApi.init();
+    // listenNotifications();
+  }
 // void listenNotifications() => NotificationApi.onNotifications.stream.listen(onClickedNotification);
-// void onClickedNotification(String? payload) => 
-          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => loginUser(payload: payload,)));
+// void onClickedNotification(String? payload) =>
+  // Navigator.of(context).push(MaterialPageRoute(builder: (context) => loginUser(payload: payload,)));
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +186,7 @@ notificatons()async{
                     const Padding(
                       padding: EdgeInsets.only(top: 80, left: 25),
                       child: Text(
-                        "Women Safer",
+                        "WomenSafer",
                         style: TextStyle(
                             fontStyle: FontStyle.italic,
                             color: Colors.pinkAccent,
@@ -135,19 +209,19 @@ notificatons()async{
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     textfield(
-                      hintText: "User Name",
+                      hintText: "Full Name",
                       obscureText: false,
                       controller: usernameController,
                     ),
                     const SizedBox(height: 10),
                     textfield(
-                      hintText: "PhoneNumber",
+                      hintText: "Phone Number",
                       obscureText: false,
                       controller: phonenumberController,
                     ),
                     const SizedBox(height: 10),
                     textfield(
-                      hintText: "Email",
+                      hintText: "Email Address",
                       obscureText: false,
                       controller: emailController,
                     ),
@@ -185,42 +259,69 @@ notificatons()async{
                           ),
                           onPressed: () async {
                             PhoneNumberUtil plugin = PhoneNumberUtil();
-                            String springFieldUSASimpleNoRegion = phonenumberController.text;
-                            RegionInfo region = RegionInfo(code: 'PK', name: 'Pakistan', prefix: 92);
-                            bool isValid = await plugin.validate(springFieldUSASimpleNoRegion, region.code);
-                            if(phonenumberController.text == "" || usernameController.text == "" || emailController.text == "" || passController.text == "")
-                            {
+
+                            if (phonenumberController.text == "" ||
+                                usernameController.text == "" ||
+                                emailController.text == "" ||
+                                passController.text == "") {
                               var snackBar = SnackBar(
                                 content: Text("Fields cannot be empty!"),
                                 action: SnackBarAction(
-                                label: "Close",
-                                onPressed: () {},
+                                  label: "Close",
+                                  onPressed: () {},
                                 ),
                               );
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);          
-                            }
-                            else
-                            if(isValid)
-                            {
-                              register();
-                              notificatons();
-                              NotificationApi.showNotification(
-                                title: 'Registeration',
-                                body: 'Sucessfull',
-                                payload: ''
-                              );
-                              var snackBar = SnackBar(
-                                content: Text("Registration Successfull!"),
-                                action: SnackBarAction(
-                                label: "Close",
-                                onPressed: () {},
-                                ),
-                              );
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);          
-                            }
-                            else{
-                              final snackBar = SnackBar(content: const Text("Inavlid Number"));
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            } else {
+                              String springFieldUSASimpleNoRegion =
+                                  phonenumberController.text;
+                              RegionInfo region = RegionInfo(
+                                  code: 'PK', name: 'Pakistan', prefix: 92);
+                              bool isValid = await plugin.validate(
+                                  springFieldUSASimpleNoRegion, region.code);
+
+                              bool emailValid = RegExp(
+                                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                  .hasMatch(emailController.text);
+                              if (isValid && emailValid) {
+                                // SimpleFontelicoProgressDialog _dialog = SimpleFontelicoProgressDialog(context: context, barrierDimisable:  false);
+                                // _dialog.show(message: 'Loading...', type: SimpleFontelicoProgressDialogType.hurricane);
+                                await showDialog(
+      context: context,
+      builder: (context) =>
+          FutureProgressDialog(register(), message: Text('Loading...')),
+    );
+    print(out);
+    if(out == "Account Registered Successfully!")
+    {
+Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => loginUser()),
+          (route) => false);
+    }
+    else
+    {
+                          final snackBar = SnackBar(content: Text(out));
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+    }
+  // String res = await register();
+      
+  // _dialog.hide();
+                                
+                              } else {
+                                if (isValid == false) {
+                                  final snackBar = SnackBar(
+                                      content: const Text("Inavlid Number"));
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                } else if (!emailValid) {
+                                  final snackBar = SnackBar(
+                                      content: const Text("Inavlid Email"));
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                }
+                              }
                             }
                           }),
                     ),
@@ -234,6 +335,7 @@ notificatons()async{
       ),
     );
   }
+  
 }
 
 Widget textfield(
@@ -258,4 +360,5 @@ Widget textfield(
           )),
     ),
   );
+
 }

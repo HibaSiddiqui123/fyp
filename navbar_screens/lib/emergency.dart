@@ -41,7 +41,7 @@ catch (e){
   {
     super.initState();
     setState(() {
-    display();  
+    //display();  
     });
     
   }

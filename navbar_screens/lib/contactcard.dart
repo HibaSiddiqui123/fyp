@@ -94,7 +94,7 @@ deleteData()async{
           // ignore: prefer_const_literals_to_create_immutables
           actions: [
             IconSlideAction(
-              color: Colors.red,
+              color: Colors.pinkAccent,
               icon: Icons.delete,
               foregroundColor: Colors.white,
               onTap: () async {
@@ -117,7 +117,7 @@ deleteData()async{
           ],
           secondaryActions: [
             IconSlideAction(
-              color: Colors.blue,
+              color: Colors.pinkAccent,
               icon: Icons.edit,
               foregroundColor: Colors.white,
               onTap: () async {

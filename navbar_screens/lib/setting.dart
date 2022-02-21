@@ -1,11 +1,14 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:navbar_screens/ProfileDetails.dart';
 import 'package:navbar_screens/contact.dart';
 import 'package:navbar_screens/login.dart';
 import 'package:navbar_screens/main.dart';
 import 'package:navbar_screens/settings1.dart';
+import 'package:navbar_screens/sharedprefrences.dart';
 import 'package:navbar_screens/terms_and_conditions.dart';
 
 import 'privacy_policy.dart';
@@ -18,16 +21,27 @@ class setting extends StatefulWidget {
 }
 
 class _settingState extends State<setting> {
+
+  LoginInfo()async{
+    int isLogin = 0;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('state', isLogin);
+  }
+
   final Padding=EdgeInsets.symmetric(horizontal: 20);
   final firebaseInstance = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
   var image = "";
+  var Uname = "";
   @override
   void initState() {
     // Only create the stream once
-    firebaseInstance.collection('users').doc(auth.currentUser!.uid).get().then((value) {
+    firebaseInstance.collection('users').where('user_Id', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+        .get().then((value) {
       setState(() {
-        image = value['image'];
+        image = value.docs[0].data()['image'];
+        Uname = value.docs[0].data()['userName'];
+        print(value.docs[0].data()['userName']);
       });
     });
     super.initState();
@@ -35,12 +49,12 @@ class _settingState extends State<setting> {
 
   @override
   Widget build(BuildContext context) {
-    final name= FirebaseAuth.instance.currentUser!.displayName;
-    
+    final name= Uname;
+    print(FirebaseAuth.instance.currentUser);
     final email = FirebaseAuth.instance.currentUser!.email;
     //final email='hiba123@abc.com';
     // String? name = FirebaseAuth.instance.currentUser!.displayName;
-    // final AssetImage='assets\womyn3.jpg';
+    // firnal AssetImage='assets\womyn3.jpg';
     return Drawer(
        child: Material(
          color: Colors.pinkAccent,
@@ -89,7 +103,13 @@ class _settingState extends State<setting> {
              const SizedBox(height: 24,) ,
              buildmenuitem(text: 'LOGOUT', icon: Icons.logout_sharp,
              onClicked: () async {
+              // setState(() {
+              //   sharedPrefrences().setInstance(0);
+              // });
+              LoginInfo();
               await FirebaseAuth.instance.signOut();
+              GoogleSignIn().signOut();
+              print("Signed Out!");
               selecteditem(context, 3);
              } 
              ),
@@ -164,7 +184,8 @@ void selecteditem(BuildContext context, int index){
  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>PrivacyPolicy(),));
  break;
  case 3:
- Navigator.of(context).push(MaterialPageRoute(builder: (context)=>loginUser(),));
+ Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>loginUser()), (route) => false);
+//  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>loginUser(),));
  break;
   }
 }

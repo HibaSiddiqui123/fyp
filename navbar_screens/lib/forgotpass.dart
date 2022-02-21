@@ -1,26 +1,26 @@
-import 'dart:ui';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:navbar_screens/login.dart';
 import 'package:navbar_screens/signin.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+// void main() {
+//   runApp(const MyApp());
+// }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+// class MyApp extends StatelessWidget {
+//   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: ForgotPass(),
-    );
-  }
-}
+//   // This widget is the root of your application.
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       title: 'Flutter Demo',
+//       theme: ThemeData(primarySwatch: Colors.blue),
+//       home: ForgotPass(),
+//     );
+//   }
+// }
 
 class ForgotPass extends StatefulWidget {
   const ForgotPass({Key? key}) : super(key: key);
@@ -30,6 +30,34 @@ class ForgotPass extends StatefulWidget {
 }
 
 class _ForgotPassState extends State<ForgotPass> {
+  TextEditingController emailcontroller = TextEditingController();
+
+  Reset() async {
+    bool emailValid = RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(emailcontroller.text);
+    if (emailValid) {
+      FirebaseAuth.instance
+          .sendPasswordResetEmail(email: emailcontroller.text)
+          .then((value) {
+            var snackBar = SnackBar(
+          content: Text("Email Sent"),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => loginUser()),
+                        (route) => false);
+          })
+          .onError((error, stackTrace) {
+        var snackBar = SnackBar(
+          content: Text("Invalid Credentials"),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,59 +102,71 @@ class _ForgotPassState extends State<ForgotPass> {
 //
                         ])),
               ))),
-      body: Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Text(
-              'Forgot Password',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 30,
-              ),
-            ),
-            TextFormField(
-              cursorColor: Colors.pinkAccent,
-              decoration: InputDecoration(
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.pinkAccent)),
-                labelText: "Email",
-                hintText: "Enter your email",
-                hintStyle: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey),
-                labelStyle: TextStyle(
-                  fontSize: 25,
+      body: Center(
+        child: Container(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'Forgot Password',
+                style: TextStyle(
                   color: Colors.pinkAccent,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
                 ),
-                floatingLabelBehavior: FloatingLabelBehavior.always,
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('SUBMIT'),
-              style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(200, 20),
-                  primary: Colors.pinkAccent,
-                  textStyle: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                  )),
-            ),
-            TextButton(
-                onPressed: () {
-                  //  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>LoginPage(),));
-                },
-                child: Text(
-                  'Back to Login',
-                  style: TextStyle(fontSize: 20, color: Colors.black),
-                ))
-          ],
+              SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: emailcontroller,
+                cursorColor: Colors.pinkAccent,
+                decoration: InputDecoration(
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.pinkAccent)),
+                  labelText: "Email",
+                  hintText: "Enter your email",
+                  hintStyle: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey),
+                  labelStyle: TextStyle(
+                    fontSize: 25,
+                    color: Colors.pinkAccent,
+                  ),
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                onPressed: Reset,
+                child: Text('SUBMIT'),
+                style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(200, 20),
+                    primary: Colors.pinkAccent,
+                    textStyle: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    )),
+              ),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => loginUser()),
+                        (route) => false);
+                    //  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>LoginPage(),));
+                  },
+                  child: Text(
+                    'Back to Login',
+                    style: TextStyle(fontSize: 20, color: Colors.pinkAccent, fontWeight: FontWeight.bold),
+                  ))
+            ],
+          ),
         ),
       ),
     );

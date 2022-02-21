@@ -42,16 +42,32 @@ class Welcome extends StatelessWidget {
                   ),
                 ),
                 Row(children: [
-                  const Padding(
+                  Column(
+                    children: [
+                      const Padding(
                     padding: EdgeInsets.only(top: 110, left: 15),
                     child: Text(
-                      "Women Safer",
+                      "Welcome to",
+                      style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          color: Colors.pinkAccent,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                      const Padding(
+                    padding: EdgeInsets.only(top: 10, left: 15),
+                    child: Text(
+                      "WomenSafer",
                       style: TextStyle(
                           fontStyle: FontStyle.italic,
                           color: Colors.pinkAccent,
                           fontSize: 27,
                           fontWeight: FontWeight.bold),
                     ),
+                  )
+
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 10, left: 0, top: 25),
